@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: SECURITY-SERVICE
+  kafka:
+    bootstrap-servers: pkc-6ojv2.us-west4.gcp.confluent.cloud:9092
+    properties:
+      security:
+        protocol: SASL_SSL
+      sasl:
+        jaas:
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='HQXHMQNHXMZMBALL' password='xJN8hr8N1U83YwsJsvsGq7zNEbbmS3O23+ycndT0e42e0ohICCI7TAmK/PFQTWIA';
+        mechanism: PLAIN
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: spring-boot
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+          json:
+            trusted:
+              packages: '*'
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka/
+
+
+server:
+  port: 9898
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
