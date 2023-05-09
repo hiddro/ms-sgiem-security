@@ -1,4 +1,6 @@
 spring:
+  banner:
+    location: classpath:banner/securityBanner.txt
   application:
     name: SECURITY-SERVICE
   kafka:
