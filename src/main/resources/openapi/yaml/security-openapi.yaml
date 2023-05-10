@@ -1,0 +1,294 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger Security Proyecto SGIEM - UTP
+  license:
+    name: MIT
+servers:
+  - url: http://localhost:8080/
+tags:
+  - name: user
+    description: Everything about your Users
+  - name: rol
+    description: Everything about your Rols
+  - name: token
+    description: Operations wiht the Token
+paths:
+  /user:
+    get:
+      summary: List all users
+      description: Return list Users
+      operationId: listUsers
+      tags:
+        - user
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create a user
+      description: Add a new User
+      operationId: registerUser
+      tags:
+        - user
+      requestBody:
+        description: Create a new user in the SGIEM
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /rol:
+    get:
+      summary: List all rols
+      description: Return list Rols
+      operationId: listRols
+      tags:
+        - rol
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolResponse'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Create a user
+      description: Add a new Rol
+      operationId: registerRol
+      tags:
+        - rol
+      requestBody:
+        description: Create a new user in the SGIEM
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RolRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RolResponse'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RolResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /token:
+    post:
+      summary: Obteined Token of User
+      description: Get Token
+      operationId: getToken
+      tags:
+        - token
+      requestBody:
+        description: Generate Token
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    UserRequest:
+      type: object
+      required:
+        - names
+        - email
+        - surenames
+        - password
+        - code
+      properties:
+        names:
+          type: string
+          example: James
+        surenames:
+          type: string
+          example: Gosling May
+        code:
+          type: string
+          example: FFFFFFFF
+        email:
+          type: string
+          example: james@gmail.com
+        password:
+          type: string
+          example: 12345
+    UserResponse:
+      type: object
+      properties:
+        idUser:
+          type: integer
+          format: int32
+          example: 1
+        names:
+          type: string
+          example: James
+        surenames:
+          type: string
+          example: Gosling May
+        code:
+          type: string
+          example: FFFFFFFF
+        email:
+          type: string
+          example: james@gmail.com
+        password:
+          type: string
+          example: 12345
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RolDetails'
+    RolDetails:
+      type: object
+      properties:
+        idRol:
+          type: integer
+          format: int32
+          example: 1
+        titulo:
+          type: string
+          example: USER
+          enum:
+            - REHU
+            - USER
+            - ADMIN
+    RolRequest:
+      type: object
+      required:
+        - titulo
+      properties:
+        titulo:
+          type: string
+          example: USER
+          enum:
+            - REHU
+            - USER
+            - ADMIN
+    RolResponse:
+      type: object
+      properties:
+        idRol:
+          type: integer
+          format: int32
+          example: 1
+        titulo:
+          type: string
+          example: USER
+          enum:
+            - REHU
+            - USER
+            - ADMIN
+    AuthRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          example: james@gmail.com
+        password:
+          type: string
+          example: 12345
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "abcdefgh12345..."
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
