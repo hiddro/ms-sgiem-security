@@ -1,5 +1,6 @@
 package com.sgiem.ms.security.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,9 +39,6 @@ public class UserCredential implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "usuario_rol",
-            joinColumns = @JoinColumn(name = "idUser", referencedColumnName = "idUser"),
-            inverseJoinColumns = @JoinColumn(name = "idRol", referencedColumnName = "idRol"))
-    private List<RolCredential> roles = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private List<RolCredential> roles;
 }

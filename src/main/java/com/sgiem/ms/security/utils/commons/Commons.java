@@ -2,7 +2,11 @@ package com.sgiem.ms.security.utils.commons;
 
 import com.sgiem.ms.security.dto.RolDetails;
 import com.sgiem.ms.security.dto.RolResponse;
+import com.sgiem.ms.security.models.entity.UserCredential;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Commons {
@@ -37,5 +41,12 @@ public class Commons {
                 titulo.equalsIgnoreCase("REHU") ? RolResponse.TituloEnum.REHU :
                         titulo.equalsIgnoreCase("ADMIN") ? RolResponse.TituloEnum.ADMIN : RolResponse.TituloEnum.USER;
 
+    }
+
+    public static List<RolDetails> validateRolDetails (UserCredential user) {
+        return user.getRoles().isEmpty() ? new ArrayList<>() : Arrays.asList(RolDetails.builder()
+                .idRol(user.getRoles().get(0).getIdRol())
+                .titulo(validateTitulo(user.getRoles().get(0).getTitulo()))
+                .build());
     }
 }

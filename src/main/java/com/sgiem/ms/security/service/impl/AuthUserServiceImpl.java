@@ -29,8 +29,8 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private Gson gson;
+//    @Autowired
+//    private Gson gson;
 
     @Autowired
     private Producer producer;
@@ -41,18 +41,30 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
     }
 
     @Override
-    public UserResponse saveUser(UserCredential credential) {
+    public UserResponse saveUser(UserCredential credential){
+
+        UserCredential userBD = userCredentialRepositories.findByEmail(credential.getEmail()).orElse(null);
+        if (userBD != null){
+            return UserResponse.builder().build();
+        }
+
+        String temp = credential.getPassword();
+//        RolCredential rol = rolCredentialRepositories.save(RolCredential.builder().titulo("USER").build());
+
         credential.setPassword(passwordEncoder.encode(credential.getPassword()));
         credential.setCode(Commons.generateCode());
+//        credential.setRoles(Arrays.asList(rol));
 
-        RolCredential rol = rolCredentialRepositories.findByTitulo("USER").get();
-
-        credential.setRoles(Arrays.asList(rol));
-
+        // Guardar User BD Postgres
         UserCredential user = userCredentialRepositories.save(credential);
 
+        //KAFKA - INICIO
 //        log.info("User: {}", new Gson().toJson(credential));
-//        producer.sendMessage("User: ", new Gson().toJson(credential));
+        Gson gson = new Gson();
+        credential.setPassword(temp);
+
+        producer.sendMessage("User: ", gson.toJson(credential));
+        //KAFKA - FINAL
 
         return UserResponse.builder()
                 .idUser(user.getIdUser())
@@ -60,10 +72,10 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
                 .surenames(user.getSurenames())
                 .code(user.getCode())
                 .email(user.getEmail())
-                .roles(Arrays.asList(RolDetails.builder()
-                        .idRol(user.getRoles().get(0).getIdRol())
-                        .titulo(Commons.validateTitulo(user.getRoles().get(0).getTitulo()))
-                        .build()))
+//                .roles(Arrays.asList(RolDetails.builder()
+//                        .idRol(user.getRoles().get(0).getIdRol())
+//                        .titulo(Commons.validateTitulo(user.getRoles().get(0).getTitulo()))
+//                        .build()))
                 .build();
     }
 }
