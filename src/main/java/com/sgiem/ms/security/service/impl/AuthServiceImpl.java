@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.sgiem.ms.security.config.kafka.Producer;
 import com.sgiem.ms.security.models.entity.RolCredential;
 import com.sgiem.ms.security.models.entity.UserCredential;
-import com.sgiem.ms.security.repository.RolCredentialRepository;
-import com.sgiem.ms.security.repository.UserCredentialRepository;
+import com.sgiem.ms.security.repository.RolCredentialRepositories;
+import com.sgiem.ms.security.repository.UserCredentialRepositories;
 import com.sgiem.ms.security.service.AuthService;
 import com.sgiem.ms.security.utils.commons.Commons;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +20,10 @@ import java.util.List;
 public class AuthServiceImpl implements AuthService {
 
     @Autowired
-    private UserCredentialRepository repository;
+    private UserCredentialRepositories repository;
 
     @Autowired
-    private RolCredentialRepository rolRepository;
+    private RolCredentialRepositories rolRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
