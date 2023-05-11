@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/auth-rol")
+@RequestMapping("/auth/rol")
 public class AuthRolController implements RolApi {
 
     @Autowired

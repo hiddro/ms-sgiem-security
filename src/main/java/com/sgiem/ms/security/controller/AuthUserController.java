@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/auth-user")
+@RequestMapping("/auth/user")
 public class AuthUserController implements UserApi {
 
     @Autowired
@@ -46,7 +46,8 @@ public class AuthUserController implements UserApi {
 
     @Override
     public ResponseEntity<UserResponse> registerUser(UserRequest userRequest){
-        UserResponse user = authUserService.saveUser(gson.fromJson(gson.toJson(userRequest), UserCredential.class));
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return null;
+//        UserResponse user = authUserService.saveUser(gson.fromJson(gson.toJson(userRequest), UserCredential.class));
+//        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
