@@ -35,6 +35,9 @@ public class AuthUserController implements UserApi {
                         .surenames(user.getSurenames())
                         .code(user.getCode())
                         .email(user.getEmail())
+                        .state(Commons.validateState(user.getState()))
+                        .createTime(Commons.validateDate(user.getCreateTime()))
+                        .updateTime(Commons.validateDate(user.getUpdateTime()))
                         .roles(Commons.validateRolArray(user))
                         .build())
                 .collect(Collectors.toList());

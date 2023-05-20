@@ -273,12 +273,12 @@ components:
         createTime:
           type: string
           format: date
-          pattern: '^(\\d{2})-(\\d{2})-(\\d{4})$'
+          pattern: '^(\\d{4})-(\\d{2})-(\\d{2})$'
           example: '31-12-2023'
         updateTime:
           type: string
           format: date
-          pattern: '^(\\d{2})-(\\d{2})-(\\d{4})$'
+          pattern: '^(\\d{4})-(\\d{2})-(\\d{2})$'
           example: '31-12-2023'
         roles:
           type: array

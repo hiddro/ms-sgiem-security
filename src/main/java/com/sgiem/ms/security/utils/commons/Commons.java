@@ -2,12 +2,15 @@ package com.sgiem.ms.security.utils.commons;
 
 import com.sgiem.ms.security.dto.RolDetails;
 import com.sgiem.ms.security.dto.RolResponse;
+import com.sgiem.ms.security.dto.UserResponse;
 import com.sgiem.ms.security.models.entity.UserCredential;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Commons {
@@ -42,6 +45,27 @@ public class Commons {
                 titulo.equalsIgnoreCase("REHU") ? RolResponse.TituloEnum.REHU :
                         titulo.equalsIgnoreCase("ADMIN") ? RolResponse.TituloEnum.ADMIN : RolResponse.TituloEnum.USER;
 
+    }
+
+    public static UserResponse.StateEnum validateState(String state){
+        return state.equalsIgnoreCase("ACTIVO") ? UserResponse.StateEnum.ACTIVO : UserResponse.StateEnum.INACTIVO;
+    }
+
+    public static LocalDate validateDate(Date date){
+
+        if(date != null){
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            String formattedDate = dateFormat.format(date);
+
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            LocalDate localDate = LocalDate.parse(formattedDate, inputFormatter);
+
+            return localDate;
+        }
+
+        return null;
     }
 
     public static List<RolDetails> validateRolArray (UserCredential user) {

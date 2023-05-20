@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -60,6 +61,7 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
         return userBD.map(e -> {
                 credential.setPassword(passwordEncoder.encode(credential.getPassword()));
                 credential.setCode(Commons.generateCode());
+                credential.setState("ACTIVO");
 
                 log.info("Create User Postgresql Azure");
                 UserCredential user = userCredentialRepositories.save(credential);
@@ -84,6 +86,9 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
                         .surenames(user.getSurenames())
                         .code(user.getCode())
                         .email(user.getEmail())
+                        .state(Commons.validateState(user.getState()))
+                        .createTime(Commons.validateDate(user.getCreateTime()))
+                        .updateTime(Commons.validateDate(user.getUpdateTime()))
                         .roles(Arrays.asList(RolDetails.builder()
                                 .idRol(user.getRoles().get(0).getIdRol())
                                 .titulo(Commons.validateTitulo(user.getRoles().get(0).getTitulo()))
@@ -114,6 +119,9 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
                             .surenames(u.getSurenames())
                             .code(u.getCode())
                             .email(u.getEmail())
+                            .state(Commons.validateState(u.getState()))
+                            .createTime(Commons.validateDate(u.getCreateTime()))
+                            .updateTime(Commons.validateDate(u.getUpdateTime()))
                             .roles(Commons.validateRolArray(u))
                             .build();
                 }).orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
