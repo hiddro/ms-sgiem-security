@@ -37,4 +37,18 @@ public class AuthRolController implements RolApi {
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<List<RolResponse>> listRolsTitulo(String titulo) {
+        List<RolResponse> list = authRolService.getAllRolsTitulo(titulo)
+                .stream()
+                .map(rol -> RolResponse.builder()
+                        .idRol(rol.getIdRol())
+                        .titulo(Commons.validateTituloResponse(rol.getTitulo()))
+                        .idUser(rol.getUser().getIdUser())
+                        .build())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 }

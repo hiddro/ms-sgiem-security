@@ -31,7 +31,8 @@ public class AuthConfig {
                 .requestMatchers("/auth/register", "/auth/token/token", "/auth/validate",
                         "/auth/rol/rol/register", "/auth/rol/rol", "/auth/user/user/register", "/auth/user/user").permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/auth/user/user/assign/**"),
-                        new AntPathRequestMatcher("/auth/user/user/password/**")).permitAll()
+                        new AntPathRequestMatcher("/auth/user/user/password/**"),
+                        new AntPathRequestMatcher("/auth/rol/rol/**")).permitAll()
                 .and()
                 .build();
     }
