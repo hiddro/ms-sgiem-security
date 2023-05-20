@@ -41,6 +41,70 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /user/{state}:
+    get:
+      summary: List all users for state
+      description: Return list Users for state
+      operationId: listUserState
+      tags:
+        - user
+      parameters:
+        - name: state
+          in: path
+          description: state user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/{code}:
+    get:
+      summary: Find by user for code
+      description: Return user for code
+      operationId: getUserCode
+      tags:
+        - user
+      parameters:
+        - name: code
+          in: path
+          description: state user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /user/register:
     post:
       summary: Create a user
@@ -156,6 +220,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /user/state/{code}:
+    put:
+      tags:
+        - user
+      summary: change state of user
+      description: This can only be done by the logged in user.
+      operationId: changeState
+      parameters:
+        - name: code
+          in: path
+          description: code user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /rol:
     get:
       summary: List all rols
@@ -163,6 +257,40 @@ paths:
       operationId: listRols
       tags:
         - rol
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolResponse'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RolResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /rol/{titulo}:
+    get:
+      summary: List all rols for titulo
+      description: Return list Rols for titulo
+      operationId: listRolsTitulo
+      tags:
+        - rol
+      parameters:
+        - name: titulo
+          in: path
+          description: titulo rol
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: successful operation
