@@ -10,14 +10,18 @@ import com.sgiem.ms.security.repository.GenericRepositories;
 import com.sgiem.ms.security.repository.RolCredentialRepositories;
 import com.sgiem.ms.security.repository.UserCredentialRepositories;
 import com.sgiem.ms.security.service.AuthUserService;
+import com.sgiem.ms.security.service.EmployeesService;
 import com.sgiem.ms.security.utils.commons.Commons;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
+@Slf4j
 public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer> implements AuthUserService {
 
     @Autowired
@@ -27,10 +31,13 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
     private RolCredentialRepositories rolCredentialRepositories;
 
     @Autowired
+    private EmployeesService employeesService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    private Gson gson;
+    @Autowired
+    private Gson gson;
 
     @Autowired
     private Producer producer;
@@ -43,39 +50,72 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
     @Override
     public UserResponse saveUser(UserCredential credential){
 
-        UserCredential userBD = userCredentialRepositories.findByEmail(credential.getEmail()).orElse(null);
-        if (userBD != null){
-            return UserResponse.builder().build();
+        Optional<UserCredential> userBD = Optional.ofNullable(userCredentialRepositories.findByEmail(credential.getEmail()).orElse(new UserCredential()));
+
+        log.info("Validate User!");
+        if (userBD.get().getIdUser() != 0){
+            throw new RuntimeException("El usuario ya existe!");
         }
 
-        String temp = credential.getPassword();
-//        RolCredential rol = rolCredentialRepositories.save(RolCredential.builder().titulo("USER").build());
+        return userBD.map(e -> {
+                credential.setPassword(passwordEncoder.encode(credential.getPassword()));
+                credential.setCode(Commons.generateCode());
 
-        credential.setPassword(passwordEncoder.encode(credential.getPassword()));
-        credential.setCode(Commons.generateCode());
-//        credential.setRoles(Arrays.asList(rol));
+                log.info("Create User Postgresql Azure");
+                UserCredential user = userCredentialRepositories.save(credential);
 
-        // Guardar User BD Postgres
-        UserCredential user = userCredentialRepositories.save(credential);
+                log.info("Create & Save Rol Postgresql Azure");
+                RolCredential rol = rolCredentialRepositories.save(RolCredential.builder()
+                        .titulo("USER")
+                        .user(user)
+                        .build());
+                user.setRoles(Arrays.asList(rol));
 
-        //KAFKA - INICIO
-//        log.info("User: {}", new Gson().toJson(credential));
-        Gson gson = new Gson();
-        credential.setPassword(temp);
+                log.info("Send Kafka Topic");
+                String temp = credential.getPassword();
+                credential.setPassword(temp);
+                credential.setRoles(Arrays.asList(rol));
+    //          producer.sendMessage("User: ", gson.toJson(credential));
 
-        producer.sendMessage("User: ", gson.toJson(credential));
-        //KAFKA - FINAL
+                log.info("Response POST");
+                return UserResponse.builder()
+                        .idUser(user.getIdUser())
+                        .names(user.getNames())
+                        .surenames(user.getSurenames())
+                        .code(user.getCode())
+                        .email(user.getEmail())
+                        .roles(Arrays.asList(RolDetails.builder()
+                                .idRol(user.getRoles().get(0).getIdRol())
+                                .titulo(Commons.validateTitulo(user.getRoles().get(0).getTitulo()))
+                                .idUser(user.getRoles().get(0).getUser().getIdUser())
+                                .build()))
+                        .build();
+            }).get();
 
-        return UserResponse.builder()
-                .idUser(user.getIdUser())
-                .names(user.getNames())
-                .surenames(user.getSurenames())
-                .code(user.getCode())
-                .email(user.getEmail())
-//                .roles(Arrays.asList(RolDetails.builder()
-//                        .idRol(user.getRoles().get(0).getIdRol())
-//                        .titulo(Commons.validateTitulo(user.getRoles().get(0).getTitulo()))
-//                        .build()))
-                .build();
+    }
+
+    @Override
+    public UserResponse assignRolUser(String titulo, String code) {
+//        Optional<UserCredential> userBD = userCredentialRepositories.findByCode(code);
+        return userCredentialRepositories.findByCode(code)
+                .map(u -> {
+                    Commons.validateArrayRoles(titulo, u);
+
+                    RolCredential rol = rolCredentialRepositories.save(RolCredential.builder()
+                            .titulo(titulo)
+                            .user(u)
+                            .build());
+
+                    u.getRoles().add(rol);
+
+                    return UserResponse.builder()
+                            .idUser(u.getIdUser())
+                            .names(u.getNames())
+                            .surenames(u.getSurenames())
+                            .code(u.getCode())
+                            .email(u.getEmail())
+                            .roles(Commons.validateRolArray(u))
+                            .build();
+                }).orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
     }
 }

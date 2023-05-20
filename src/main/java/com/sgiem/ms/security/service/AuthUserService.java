@@ -6,4 +6,6 @@ import com.sgiem.ms.security.models.entity.UserCredential;
 public interface AuthUserService extends CrudService<UserCredential, Integer>{
 
     public UserResponse saveUser(UserCredential credential);
+
+    public UserResponse assignRolUser(String titulo, String code);
 }

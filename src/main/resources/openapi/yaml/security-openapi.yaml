@@ -77,6 +77,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /user/assign/{titulo}/{code}:
+    put:
+      tags:
+        - user
+      summary: Assign user added rol
+      description: This can only be done by the logged in user.
+      operationId: assignUser
+      parameters:
+        - name: titulo
+          in: path
+          description: titulo that need to be added
+          required: true
+          schema:
+            type: string
+        - name: code
+          in: path
+          description: code user
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /rol:
     get:
       summary: List all rols
@@ -239,6 +275,10 @@ components:
             - REHU
             - USER
             - ADMIN
+        idUser:
+          type: integer
+          format: int32
+          example: 1
     RolRequest:
       type: object
       required:

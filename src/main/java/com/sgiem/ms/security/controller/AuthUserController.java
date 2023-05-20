@@ -2,7 +2,6 @@ package com.sgiem.ms.security.controller;
 
 import com.google.gson.Gson;
 import com.sgiem.ms.security.api.v1.UserApi;
-import com.sgiem.ms.security.dto.RolDetails;
 import com.sgiem.ms.security.dto.UserRequest;
 import com.sgiem.ms.security.dto.UserResponse;
 import com.sgiem.ms.security.models.entity.UserCredential;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +35,7 @@ public class AuthUserController implements UserApi {
                         .surenames(user.getSurenames())
                         .code(user.getCode())
                         .email(user.getEmail())
-                        .roles(Commons.validateRolDetails(user))
+                        .roles(Commons.validateRolArray(user))
                         .build())
                 .collect(Collectors.toList());
 
@@ -46,8 +44,12 @@ public class AuthUserController implements UserApi {
 
     @Override
     public ResponseEntity<UserResponse> registerUser(UserRequest userRequest){
-        return null;
-//        UserResponse user = authUserService.saveUser(gson.fromJson(gson.toJson(userRequest), UserCredential.class));
-//        return new ResponseEntity<>(user, HttpStatus.OK);
+        UserResponse user = authUserService.saveUser(gson.fromJson(gson.toJson(userRequest), UserCredential.class));
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserResponse> assignUser(String titulo, String code) {
+        return new ResponseEntity<>(authUserService.assignRolUser(titulo, code), HttpStatus.OK);
     }
 }

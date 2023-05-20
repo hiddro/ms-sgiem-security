@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Commons {
 
@@ -43,10 +44,22 @@ public class Commons {
 
     }
 
-    public static List<RolDetails> validateRolDetails (UserCredential user) {
-        return user.getRoles().isEmpty() ? new ArrayList<>() : Arrays.asList(RolDetails.builder()
-                .idRol(user.getRoles().get(0).getIdRol())
-                .titulo(validateTitulo(user.getRoles().get(0).getTitulo()))
-                .build());
+    public static List<RolDetails> validateRolArray (UserCredential user) {
+        return user.getRoles().isEmpty() ? new ArrayList<>() :
+                user.getRoles()
+                        .stream()
+                        .map(r -> RolDetails.builder()
+                                .idRol(r.getIdRol())
+                                .titulo(validateTitulo(r.getTitulo()))
+                                .idUser(r.getUser().getIdUser()).build())
+                        .collect(Collectors.toList());
+    }
+
+    public static void validateArrayRoles(String titulo, UserCredential user){
+        user.getRoles().forEach(r -> {
+            if(r.getTitulo().equalsIgnoreCase(titulo)){
+                throw new RuntimeException("El rol ya esta asignado al usuario!");
+            }
+        });
     }
 }

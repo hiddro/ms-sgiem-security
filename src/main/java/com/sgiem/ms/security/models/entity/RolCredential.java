@@ -8,23 +8,24 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.*;
 
-@Entity(name = "rol_credential")
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class RolCredential implements Serializable {
-    @Id
-    @GeneratedValue
-    @EqualsAndHashCode.Include
-    @Column(name = "idRol")
-    private Integer idRol;
+    @Entity(name = "rol_credential")
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+    public class RolCredential implements Serializable {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @EqualsAndHashCode.Include
+        @Column(name = "idRol")
+        private int idRol;
 
-    @Column(length = 50, name = "titulo")
-    private String titulo;
+        @Column(length = 50, name = "titulo")
+        private String titulo;
 
-    @ManyToOne
-    @JoinColumn(name = "idUser")
-    private UserCredential user;
-}
+        @ManyToOne
+        @JoinColumn(name = "idUser")
+        private UserCredential user;
+    }

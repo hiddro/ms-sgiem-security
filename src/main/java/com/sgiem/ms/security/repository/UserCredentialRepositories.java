@@ -6,4 +6,6 @@ import java.util.Optional;
 
 public interface UserCredentialRepositories extends GenericRepositories<UserCredential, Integer> {
     Optional<UserCredential> findByEmail(String username);
+
+    Optional<UserCredential> findByCode(String code);
 }
