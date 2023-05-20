@@ -264,6 +264,22 @@ components:
         email:
           type: string
           example: james@gmail.com
+        state:
+          type: string
+          example: ACTIVO
+          enum:
+            - ACTIVO
+            - INACTIVO
+        createTime:
+          type: string
+          format: date
+          pattern: '^(\\d{2})-(\\d{2})-(\\d{4})$'
+          example: '31-12-2023'
+        updateTime:
+          type: string
+          format: date
+          pattern: '^(\\d{2})-(\\d{2})-(\\d{4})$'
+          example: '31-12-2023'
         roles:
           type: array
           items:
@@ -294,18 +310,6 @@ components:
         password:
           type: string
           example: 12345
-    RolRequest:
-      type: object
-      required:
-        - titulo
-      properties:
-        titulo:
-          type: string
-          example: USER
-          enum:
-            - REHU
-            - USER
-            - ADMIN
     RolResponse:
       type: object
       properties:
@@ -320,6 +324,10 @@ components:
             - REHU
             - USER
             - ADMIN
+        idUser:
+          type: integer
+          format: int32
+          example: 1
     AuthRequest:
       type: object
       properties:

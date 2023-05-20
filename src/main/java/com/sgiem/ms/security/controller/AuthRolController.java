@@ -2,9 +2,7 @@ package com.sgiem.ms.security.controller;
 
 import com.google.gson.Gson;
 import com.sgiem.ms.security.api.v1.RolApi;
-import com.sgiem.ms.security.dto.RolRequest;
 import com.sgiem.ms.security.dto.RolResponse;
-import com.sgiem.ms.security.models.entity.RolCredential;
 import com.sgiem.ms.security.service.AuthRolService;
 import com.sgiem.ms.security.utils.commons.Commons;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +31,7 @@ public class AuthRolController implements RolApi {
                 .map(rol -> RolResponse.builder()
                         .idRol(rol.getIdRol())
                         .titulo(Commons.validateTituloResponse(rol.getTitulo()))
+                        .idUser(rol.getUser().getIdUser())
                         .build())
                 .collect(Collectors.toList());
 
