@@ -2,6 +2,7 @@ package com.sgiem.ms.security.controller;
 
 import com.google.gson.Gson;
 import com.sgiem.ms.security.api.v1.UserApi;
+import com.sgiem.ms.security.dto.PasswordRequest;
 import com.sgiem.ms.security.dto.UserRequest;
 import com.sgiem.ms.security.dto.UserResponse;
 import com.sgiem.ms.security.models.entity.UserCredential;
@@ -54,5 +55,10 @@ public class AuthUserController implements UserApi {
     @Override
     public ResponseEntity<UserResponse> assignUser(String titulo, String code) {
         return new ResponseEntity<>(authUserService.assignRolUser(titulo, code), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserResponse> resetPassword(String code, PasswordRequest passwordRequest) {
+        return new ResponseEntity<>(authUserService.resetPass(code, passwordRequest), HttpStatus.OK);
     }
 }

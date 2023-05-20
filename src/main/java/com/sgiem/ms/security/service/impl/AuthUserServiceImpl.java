@@ -2,6 +2,7 @@ package com.sgiem.ms.security.service.impl;
 
 import com.google.gson.Gson;
 import com.sgiem.ms.security.config.kafka.Producer;
+import com.sgiem.ms.security.dto.PasswordRequest;
 import com.sgiem.ms.security.dto.RolDetails;
 import com.sgiem.ms.security.dto.UserResponse;
 import com.sgiem.ms.security.models.entity.RolCredential;
@@ -112,6 +113,29 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
                             .build());
 
                     u.getRoles().add(rol);
+
+                    return UserResponse.builder()
+                            .idUser(u.getIdUser())
+                            .names(u.getNames())
+                            .surenames(u.getSurenames())
+                            .code(u.getCode())
+                            .email(u.getEmail())
+                            .state(Commons.validateState(u.getState()))
+                            .createTime(Commons.validateDate(u.getCreateTime()))
+                            .updateTime(Commons.validateDate(u.getUpdateTime()))
+                            .roles(Commons.validateRolArray(u))
+                            .build();
+                }).orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
+    }
+
+    @Override
+    public UserResponse resetPass(String code, PasswordRequest passwordRequest) {
+        return userCredentialRepositories.findByCode(code)
+                .map(u -> {
+
+
+                    u.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
+                    userCredentialRepositories.save(u);
 
                     return UserResponse.builder()
                             .idUser(u.getIdUser())
