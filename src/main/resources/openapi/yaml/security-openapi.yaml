@@ -113,6 +113,49 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /user/password/{code}:
+    put:
+      tags:
+        - user
+      summary: Reset password to User
+      description: This can only be done by the logged in user.
+      operationId: resetPassword
+      parameters:
+        - name: code
+          in: path
+          description: code user
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent password the user.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /rol:
     get:
       summary: List all rols
@@ -134,42 +177,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/RolResponse'
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /rol/register:
-    post:
-      summary: Create a user
-      description: Add a new Rol
-      operationId: registerRol
-      tags:
-        - rol
-      requestBody:
-        description: Create a new Rol in the SGIEM
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RolRequest'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/RolRequest'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/RolRequest'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RolResponse'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/RolResponse'
         default:
           description: unexpected error
           content:
@@ -279,6 +286,14 @@ components:
           type: integer
           format: int32
           example: 1
+    PasswordRequest:
+      type: object
+      required:
+        - titulo
+      properties:
+        password:
+          type: string
+          example: 12345
     RolRequest:
       type: object
       required:

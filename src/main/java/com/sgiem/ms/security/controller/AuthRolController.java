@@ -38,10 +38,4 @@ public class AuthRolController implements RolApi {
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
-    @Override
-    public ResponseEntity<RolResponse> registerRol(RolRequest rolRequest) {
-        RolCredential rol = authRolService.save(gson.fromJson(gson.toJson(rolRequest), RolCredential.class));
-        return new ResponseEntity<>(gson.fromJson(gson.toJson(rol), RolResponse.class), HttpStatus.OK);
-    }
 }
