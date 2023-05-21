@@ -51,6 +51,10 @@ public class Commons {
         return state.equalsIgnoreCase("ACTIVO") ? UserResponse.StateEnum.ACTIVO : UserResponse.StateEnum.INACTIVO;
     }
 
+    public static String validateChangeState(String state){
+        return state.equalsIgnoreCase("ACTIVO") ? "INACTIVO" : "ACTIVO";
+    }
+
     public static LocalDate validateDate(Date date){
 
         if(date != null){

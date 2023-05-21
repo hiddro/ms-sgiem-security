@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -125,7 +127,8 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
                             .updateTime(Commons.validateDate(u.getUpdateTime()))
                             .roles(Commons.validateRolArray(u))
                             .build();
-                }).orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
+                })
+                .orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
     }
 
     @Override
@@ -148,6 +151,54 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
                             .updateTime(Commons.validateDate(u.getUpdateTime()))
                             .roles(Commons.validateRolArray(u))
                             .build();
-                }).orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
+                })
+                .orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
+    }
+
+    @Override
+    public UserResponse getUserByCode(String code) {
+        return userCredentialRepositories.findByCode(code)
+                .map(u -> UserResponse.builder()
+                        .idUser(u.getIdUser())
+                        .names(u.getNames())
+                        .surenames(u.getSurenames())
+                        .code(u.getCode())
+                        .email(u.getEmail())
+                        .state(Commons.validateState(u.getState()))
+                        .createTime(Commons.validateDate(u.getCreateTime()))
+                        .updateTime(Commons.validateDate(u.getUpdateTime()))
+                        .roles(Commons.validateRolArray(u))
+                        .build())
+                .orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
+    }
+
+    @Override
+    public List<UserCredential> getAllUsersTitulo(String state) {
+        return userCredentialRepositories.findAll()
+                .stream()
+                .filter(u -> u.getState().equalsIgnoreCase(state))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponse updateStateUser(String code) {
+        return userCredentialRepositories.findByCode(code)
+                .map(u -> {
+                    u.setState(Commons.validateChangeState(u.getState()));
+                    userCredentialRepositories.save(u);
+
+                    return UserResponse.builder()
+                            .idUser(u.getIdUser())
+                            .names(u.getNames())
+                            .surenames(u.getSurenames())
+                            .code(u.getCode())
+                            .email(u.getEmail())
+                            .state(Commons.validateState(u.getState()))
+                            .createTime(Commons.validateDate(u.getCreateTime()))
+                            .updateTime(Commons.validateDate(u.getUpdateTime()))
+                            .roles(Commons.validateRolArray(u))
+                            .build();
+                })
+                .orElseThrow(() -> new RuntimeException("Valide los parametros enviados!"));
     }
 }

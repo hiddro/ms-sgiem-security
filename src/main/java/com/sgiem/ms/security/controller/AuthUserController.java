@@ -47,6 +47,31 @@ public class AuthUserController implements UserApi {
     }
 
     @Override
+    public ResponseEntity<List<UserResponse>> listUserState(String state) {
+        List<UserResponse> list = authUserService.getAllUsersTitulo(state)
+                .stream()
+                .map(user -> UserResponse.builder()
+                        .idUser(user.getIdUser())
+                        .names(user.getNames())
+                        .surenames(user.getSurenames())
+                        .code(user.getCode())
+                        .email(user.getEmail())
+                        .state(Commons.validateState(user.getState()))
+                        .createTime(Commons.validateDate(user.getCreateTime()))
+                        .updateTime(Commons.validateDate(user.getUpdateTime()))
+                        .roles(Commons.validateRolArray(user))
+                        .build())
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserResponse> getUserCode(String code) {
+        return  new ResponseEntity<>(authUserService.getUserByCode(code), HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<UserResponse> registerUser(UserRequest userRequest){
         UserResponse user = authUserService.saveUser(gson.fromJson(gson.toJson(userRequest), UserCredential.class));
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -60,5 +85,10 @@ public class AuthUserController implements UserApi {
     @Override
     public ResponseEntity<UserResponse> resetPassword(String code, PasswordRequest passwordRequest) {
         return new ResponseEntity<>(authUserService.resetPass(code, passwordRequest), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UserResponse> changeState(String code) {
+        return  new ResponseEntity<>(authUserService.updateStateUser(code), HttpStatus.OK);
     }
 }

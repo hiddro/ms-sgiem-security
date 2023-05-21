@@ -32,7 +32,10 @@ public class AuthConfig {
                         "/auth/rol/rol/register", "/auth/rol/rol", "/auth/user/user/register", "/auth/user/user").permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/auth/user/user/assign/**"),
                         new AntPathRequestMatcher("/auth/user/user/password/**"),
-                        new AntPathRequestMatcher("/auth/rol/rol/**")).permitAll()
+                        new AntPathRequestMatcher("/auth/rol/rol/**"),
+                        new AntPathRequestMatcher("/auth/user/user/search-state/**"),
+                        new AntPathRequestMatcher("/auth/user/user/search-code/**"),
+                        new AntPathRequestMatcher("/auth/user/user/state/**")).permitAll()
                 .and()
                 .build();
     }

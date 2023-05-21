@@ -41,7 +41,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/{state}:
+  /user/search-state/{state}:
     get:
       summary: List all users for state
       description: Return list Users for state
@@ -75,7 +75,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/{code}:
+  /user/search-code/{code}:
     get:
       summary: Find by user for code
       description: Return user for code
