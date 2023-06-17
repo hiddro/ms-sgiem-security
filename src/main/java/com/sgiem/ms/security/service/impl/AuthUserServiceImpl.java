@@ -1,5 +1,6 @@
 package com.sgiem.ms.security.service.impl;
 
+import com.example.UserCredentialDto;
 import com.google.gson.Gson;
 import com.sgiem.ms.security.config.kafka.Producer;
 import com.sgiem.ms.security.dto.PasswordRequest;
@@ -53,6 +54,15 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
 
     @Override
     public UserResponse saveUser(UserCredential credential){
+//        UserCredentialDto user = new UserCredentialDto();
+//        user.setNames(credential.getNames());
+//        user.setSurenames(credential.getSurenames());
+//        user.setPassword(credential.getPassword());
+//        user.setEmail(credential.getEmail());
+//        user.setCode(credential.getCode());
+//        user.setRoles("USER");
+//
+//        producer.sendMessage("User: ", user);
 
         Optional<UserCredential> userBD = Optional.ofNullable(userCredentialRepositories.findByEmail(credential.getEmail()).orElse(new UserCredential()));
 
@@ -80,7 +90,7 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
                 String temp = credential.getPassword();
                 credential.setPassword(temp);
                 credential.setRoles(Arrays.asList(rol));
-    //          producer.sendMessage("User: ", gson.toJson(credential));
+//                producer.sendMessage("User: ", gson.toJson(credential));
 
                 log.info("Response POST");
                 return UserResponse.builder()
@@ -132,8 +142,8 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
     }
 
     @Override
-    public UserResponse resetPass(String code, PasswordRequest passwordRequest) {
-        return userCredentialRepositories.findByCode(code)
+    public UserResponse resetPass(String email, PasswordRequest passwordRequest) {
+        return userCredentialRepositories.findByEmail(email)
                 .map(u -> {
 
 

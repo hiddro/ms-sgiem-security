@@ -7,9 +7,12 @@ spring:
     open-in-view: false
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://devsgiem.postgres.database.azure.com:5432/sgiem
-    username: sgiemadmindev@devsgiem
-    password: sgiem@2023
+    url: jdbc:postgresql://172.17.0.2:5432/sgiem
+    username: postgres
+    password: secret
+#    url: jdbc:postgresql://devsgiem.postgres.database.azure.com:5432/sgiem
+#    username: sgiemadmindev@devsgiem
+#    password: sgiem@2023
   banner:
     location: classpath:banner/securityBanner.txt
   application:
@@ -17,29 +20,42 @@ spring:
   kafka:
     bootstrap-servers: pkc-6ojv2.us-west4.gcp.confluent.cloud:9092
     properties:
+      basic:
+        auth:
+          credentials:
+            source: USER_INFO
+          user:
+            info: MWX776JQCSSAVQGE:TnCGLURbdSxOfD0m0+Hoy3e4bgYZWkOTUwVR/+PmGy/AvX4orQTxm66dMiXi6k3Q
+      schema:
+        registry:
+          url: https://psrc-0xx5p.us-central1.gcp.confluent.cloud
       security:
         protocol: SASL_SSL
+      ssl:
+        endpoint:
+          identification:
+            algorithm: https
       sasl:
         jaas:
-          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='HQXHMQNHXMZMBALL' password='xJN8hr8N1U83YwsJsvsGq7zNEbbmS3O23+ycndT0e42e0ohICCI7TAmK/PFQTWIA';
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='QFNNTGCZ3OEPEV6V' password='1/b3dgbidZH5Ob+s33dXPFquR1hhQOfHmRrpbcmcYmtepN4uEugxL+N6g5j1U6I4';
         mechanism: PLAIN
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
     consumer:
       group-id: spring-boot
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      properties:
-        spring:
-          deserializer:
-            value:
-              delegate:
-                class: org.springframework.kafka.support.serializer.JsonDeserializer
-          json:
-            trusted:
-              packages: '*'
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+#      properties:
+#        spring:
+#          deserializer:
+#            value:
+#              delegate:
+#                class: org.springframework.kafka.support.serializer.JsonDeserializer
+#          json:
+#            trusted:
+#              packages: '*'
 
 eureka:
   client:

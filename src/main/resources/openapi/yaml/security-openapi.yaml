@@ -177,7 +177,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  /user/password/{code}:
+  /user/password/{email}:
     put:
       tags:
         - user
@@ -185,7 +185,7 @@ paths:
       description: This can only be done by the logged in user.
       operationId: resetPassword
       parameters:
-        - name: code
+        - name: email
           in: path
           description: code user
           required: true

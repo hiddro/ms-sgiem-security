@@ -1,0 +1,37 @@
+{
+  "type": "record",
+  "name": "UserCredentialDto",
+  "namespace": "com.example",
+  "fields": [
+    {
+      "name": "names",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "surenames",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "code",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "email",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "password",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "roles",
+      "type": ["null", "string"],
+      "default": null
+    }
+  ]
+}

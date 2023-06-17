@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth/user")
 public class AuthUserController implements UserApi {
 
@@ -83,8 +84,8 @@ public class AuthUserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<UserResponse> resetPassword(String code, PasswordRequest passwordRequest) {
-        return new ResponseEntity<>(authUserService.resetPass(code, passwordRequest), HttpStatus.OK);
+    public ResponseEntity<UserResponse> resetPassword(String email, PasswordRequest passwordRequest) {
+        return new ResponseEntity<>(authUserService.resetPass(email, passwordRequest), HttpStatus.OK);
     }
 
     @Override

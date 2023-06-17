@@ -12,7 +12,7 @@ public interface AuthUserService extends CrudService<UserCredential, Integer>{
 
     public UserResponse assignRolUser(String titulo, String code);
 
-    public UserResponse resetPass(String code, PasswordRequest passwordRequest);
+    public UserResponse resetPass(String email, PasswordRequest passwordRequest);
 
     public UserResponse getUserByCode(String code);
 
