@@ -1,7 +1,6 @@
 package com.sgiem.ms.security.config.kafka;
 
 import com.example.UserCredentialDto;
-import com.sgiem.ms.security.models.entity.UserCredential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

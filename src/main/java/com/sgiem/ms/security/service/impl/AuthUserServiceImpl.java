@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -114,7 +113,6 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
 
     @Override
     public UserResponse assignRolUser(String titulo, String code) {
-//        Optional<UserCredential> userBD = userCredentialRepositories.findByCode(code);
         return userCredentialRepositories.findByCode(code)
                 .map(u -> {
                     Commons.validateArrayRoles(titulo, u);
@@ -145,8 +143,6 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
     public UserResponse resetPass(String email, PasswordRequest passwordRequest) {
         return userCredentialRepositories.findByEmail(email)
                 .map(u -> {
-
-
                     u.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
                     userCredentialRepositories.save(u);
 
