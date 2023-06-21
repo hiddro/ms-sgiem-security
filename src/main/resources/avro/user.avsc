@@ -30,7 +30,19 @@
     },
     {
       "name": "roles",
-      "type": ["null", "string"],
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "Role",
+          "fields": [
+            {
+              "name": "titulo",
+              "type": ["null", "string"]
+            }
+          ]
+        }
+      ],
       "default": null
     }
   ]

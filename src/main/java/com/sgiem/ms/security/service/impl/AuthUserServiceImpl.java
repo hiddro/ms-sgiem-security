@@ -1,5 +1,6 @@
 package com.sgiem.ms.security.service.impl;
 
+import com.example.Role;
 import com.example.UserCredentialDto;
 import com.google.gson.Gson;
 import com.sgiem.ms.security.config.kafka.Producer;
@@ -53,15 +54,6 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
 
     @Override
     public UserResponse saveUser(UserCredential credential){
-//        UserCredentialDto user = new UserCredentialDto();
-//        user.setNames(credential.getNames());
-//        user.setSurenames(credential.getSurenames());
-//        user.setPassword(credential.getPassword());
-//        user.setEmail(credential.getEmail());
-//        user.setCode(credential.getCode());
-//        user.setRoles("USER");
-//
-//        producer.sendMessage("User: ", user);
 
         Optional<UserCredential> userBD = Optional.ofNullable(userCredentialRepositories.findByEmail(credential.getEmail()).orElse(new UserCredential()));
 
@@ -71,6 +63,7 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
         }
 
         return userBD.map(e -> {
+                String temp = credential.getPassword();
                 credential.setPassword(passwordEncoder.encode(credential.getPassword()));
                 credential.setCode(Commons.generateCode());
                 credential.setState("ACTIVO");
@@ -86,10 +79,21 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
                 user.setRoles(Arrays.asList(rol));
 
                 log.info("Send Kafka Topic");
-                String temp = credential.getPassword();
                 credential.setPassword(temp);
                 credential.setRoles(Arrays.asList(rol));
-//                producer.sendMessage("User: ", gson.toJson(credential));
+
+                UserCredentialDto userk = new UserCredentialDto();
+                Role rolk = new Role();
+                userk.setNames(credential.getNames());
+                userk.setSurenames(credential.getSurenames());
+                userk.setPassword(credential.getPassword());
+                userk.setEmail(credential.getEmail());
+                userk.setCode(credential.getCode());
+
+                rolk.setTitulo("USER");
+                userk.setRoles(rolk);
+
+                producer.sendMessage("User: ", userk);
 
                 log.info("Response POST");
                 return UserResponse.builder()
