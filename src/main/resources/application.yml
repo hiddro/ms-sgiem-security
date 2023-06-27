@@ -7,6 +7,9 @@ spring:
     open-in-view: false
   datasource:
     driver-class-name: org.postgresql.Driver
+#    url: jdbc:postgresql://oregon-postgres.render.com:5432/sgiem
+#    username: sgiem_user
+#    password: 4A33cQM1PxStlo6igXesNBiVR9sUYO7p
     url: jdbc:postgresql://172.17.0.2:5432/sgiem
     username: postgres
     password: secret
