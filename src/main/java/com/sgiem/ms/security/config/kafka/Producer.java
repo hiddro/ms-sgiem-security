@@ -17,7 +17,7 @@ import java.util.function.BiConsumer;
 public class Producer {
 
     private static final Logger logger = LoggerFactory.getLogger(Producer.class);
-    private static final String TOPIC = "sgiem-topic";
+    private static final String TOPIC = "topic-sgiem";
     @Autowired
     private KafkaTemplate<String, UserCredentialDto> kafkaTemplate;
 
