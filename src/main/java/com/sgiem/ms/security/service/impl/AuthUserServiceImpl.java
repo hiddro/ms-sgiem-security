@@ -128,6 +128,8 @@ public class AuthUserServiceImpl extends CrudServiceImpl<UserCredential, Integer
 
                     u.getRoles().add(rol);
 
+                    employeesService.addRolEmployees(titulo, code);
+
                     return UserResponse.builder()
                             .idUser(u.getIdUser())
                             .names(u.getNames())

@@ -21,17 +21,17 @@ spring:
   application:
     name: SECURITY-SERVICE
   kafka:
-    bootstrap-servers: pkc-6ojv2.us-west4.gcp.confluent.cloud:9092
+    bootstrap-servers: pkc-n3603.us-central1.gcp.confluent.cloud:9092
     properties:
       basic:
         auth:
           credentials:
             source: USER_INFO
           user:
-            info: MWX776JQCSSAVQGE:TnCGLURbdSxOfD0m0+Hoy3e4bgYZWkOTUwVR/+PmGy/AvX4orQTxm66dMiXi6k3Q
+            info: B2LXQP6M5RRVRGYW:JxJPpzoCdwuznqBhT4NJZtFF6koDclfr6Z23Qhxr0xTQThYPODwu0lPksUTRGjt1
       schema:
         registry:
-          url: https://psrc-0xx5p.us-central1.gcp.confluent.cloud
+          url: https://psrc-j55zm.us-central1.gcp.confluent.cloud
       security:
         protocol: SASL_SSL
       ssl:
@@ -40,7 +40,7 @@ spring:
             algorithm: https
       sasl:
         jaas:
-          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='QFNNTGCZ3OEPEV6V' password='1/b3dgbidZH5Ob+s33dXPFquR1hhQOfHmRrpbcmcYmtepN4uEugxL+N6g5j1U6I4';
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username='JMZCBCPQXTOUEBIY' password='1DH/pWBxRtboijUdirbiyq4cAR8bpC49dV9xvIZBnmJrj75n8bsOpC60oGTRZ0+g';
         mechanism: PLAIN
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
