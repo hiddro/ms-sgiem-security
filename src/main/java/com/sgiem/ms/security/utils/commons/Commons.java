@@ -1,9 +1,11 @@
 package com.sgiem.ms.security.utils.commons;
 
+import com.google.gson.Gson;
 import com.sgiem.ms.security.dto.RolDetails;
 import com.sgiem.ms.security.dto.RolResponse;
 import com.sgiem.ms.security.dto.UserResponse;
 import com.sgiem.ms.security.models.entity.UserCredential;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -88,5 +90,9 @@ public class Commons {
                 throw new RuntimeException("El rol ya esta asignado al usuario!");
             }
         });
+    }
+
+    public static UserCredential convertUserReToCre(com.sgiem.ms.security.dto.UserRequest userRequest){
+        return new Gson().fromJson(new Gson().toJson(userRequest), UserCredential.class);
     }
 }

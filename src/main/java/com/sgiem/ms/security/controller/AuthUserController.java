@@ -74,7 +74,7 @@ public class AuthUserController implements UserApi {
 
     @Override
     public ResponseEntity<UserResponse> registerUser(UserRequest userRequest){
-        UserResponse user = authUserService.saveUser(gson.fromJson(gson.toJson(userRequest), UserCredential.class));
+        UserResponse user = authUserService.saveUser(Commons.convertUserReToCre(userRequest));
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
