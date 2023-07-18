@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = "https://ms-sgiem-security.azurewebsites.net")
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth/token")
 public class AuthTokenController implements TokenApi {
 

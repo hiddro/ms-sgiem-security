@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "https://ms-sgiem-security.azurewebsites.net")
+@CrossOrigin(origins = "*")
 @RequestMapping("/auth/rol")
 public class AuthRolController implements RolApi {
 
