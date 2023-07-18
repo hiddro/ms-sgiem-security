@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +21,9 @@ class JwtServiceTest {
     void testGenerateToken() {
         // Arrange
         String userName = "john_doe";
+
+        // Establecer el valor de la propiedad 'SECRET' en el controlador usando ReflectionTestUtils
+        ReflectionTestUtils.setField(jwtService, "SECRET", "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437");
 
         // Act
         String generatedToken = jwtService.generateToken(userName);

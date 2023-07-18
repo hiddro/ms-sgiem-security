@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "https://ms-sgiem-security.azurewebsites.net")
 @RequestMapping("/auth/user")
 public class AuthUserController implements UserApi {
 

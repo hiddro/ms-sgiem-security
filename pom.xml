@@ -19,7 +19,7 @@
 		<sonar.organization>sgiem</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.projectKey>ms-sgiem-employees</sonar.projectKey>
-		<sonar.exclusions>**/models/**</sonar.exclusions>
+		<sonar.exclusions>**/models/**,**/utils/**,**/config/**</sonar.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>

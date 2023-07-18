@@ -7,6 +7,7 @@ import com.sgiem.ms.security.dto.UserResponse;
 import com.sgiem.ms.security.models.entity.UserCredential;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class Commons {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'
         int targetStringLength = 8;
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
 
         String generatedString = random.ints(leftLimit, rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
