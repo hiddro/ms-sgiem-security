@@ -51,7 +51,6 @@ class CommonsTest {
         // Assert
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(targetStringLength, actual.length());
-        Assertions.assertEquals(actual, actual);
     }
 
     @Test
